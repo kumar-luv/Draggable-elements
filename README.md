@@ -1,70 +1,70 @@
-# Getting Started with Create React App
+## GitHub Repository
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Find the repository for this project at [Repository Name](https://github.com/your-username/your-repo-name)
 
-## Available Scripts
+## Live Demo
 
-In the project directory, you can run:
+Check out the live demo [here](https://your-live-demo-link.com)
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Instructions to run the code
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- clone this repository.
+- Open folder and do `npm install` to install all the necessary dependencies
+- Do `npm start`  inside project directory to start the application. The application will start on [http://localhost:3000](http://localhost:3000)
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Layout of the application
+The application is using flexbox as its layout. Board component has a position of relative this is because items which will be rendered on board and they will be positioned relative to the board.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Sidebar.js
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Sidebar Component contains a list of items that are rendered. 
+- Each item has draggable property set on it. 
+- When dragging is started to drag start event and we attach the inner text of dragged element as data onto this event. 
+`e.dataTransfer.setData("text/plain",e.target.lastChild.innerText)`
+- In this way we understand which component was dragged onto the canvas.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Board.js
 
-### `npm run eject`
+`State`
+- elementsOnCanvas - is an array of element objects which will be rendered on board
+- isModalOpen - to identify whether modal is opened or closed
+- modalProps - properties to pass inside modal
+- selectedElement - to signify which component is currently selected.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Element.js
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This is a dynamic component which takes couple of props.
+`Props`
+- eleType - identifies what component to be rendered
+- x - initial X value
+- y - initial Y value
+- fontWeight, fontSize are self explanatory
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+`State`
+- initialX, initialY - where user clicked for first time to initiate mouse move event
+- offsetX, offsetY - when mouse up occurs the final position of the element
+- currentX, currentY - when mouse move happens currentX and currentY change
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+The component has `onFocus` (sets selectedElement state to id of component in board Component) and `onBlur` (sets selectedElement to null ) event which signifies if the element is selected or not.
 
-## Learn More
+The component is positioned using 
+`transform: translate3d(currentX,currentY,0)` CSS rule.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### When Item is dropped on Canvas for first time
+- When items from sidebar are dropped onto board Component, `handleOnDrop` function invokes,  we retrieve the type of element that was dropped on Canvas 
+`const elType = e.dataTransfer.getData('text/plain').toLowerCase()`
+We then open the modal by passing it initial props i.e element Type and also x and y coordinates where the drop event had occurred.
+- When we submit Modal closeModal function is invoked it checks if item that we adding to Board is already present or not if present then update the details if not then add it in elementOnBoard
 
-### Code Splitting
+### When Modal is closed
+When modal is closed we check the object returned by modal if it has an id of undefined that means component is rendered for first time so an id is given and element is added to `elementsOnBoard` array. Else we update only the component that was changed.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Modal.js
+When modal is opened for the first time it is populated with x and y coordinates where drop event had occurred. 
+Here user can change fontweight and fontsize and add text.
+When modal is closed it constructs a object and it is returned to Board component
