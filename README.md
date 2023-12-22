@@ -1,10 +1,10 @@
 ## GitHub Repository
 
-Find the repository for this project at [Repository Name](https://github.com/your-username/your-repo-name)
+Find the repository for this project at [Draggable-element](https://github.com/kumar-luv/Draggable-elements.git)
 
 ## Live Demo
 
-Check out the live demo [here](https://your-live-demo-link.com)
+Check out the live demo [here](https://draggable-elements.vercel.app/)
 
 
 ## Instructions to run the code
@@ -54,7 +54,13 @@ The component is positioned using
 `transform: translate3d(currentX,currentY,0)` CSS rule.
 
 
-### When Item is dropped on Canvas for first time
+## Modal.js
+When modal is opened for the first time it is populated with x and y coordinates where drop event had occurred. 
+Here user can change fontweight and fontsize and add text.
+When modal is closed it constructs a object and it is returned to Board component
+
+
+### When Item is dropped on Board for first time
 - When items from sidebar are dropped onto board Component, `handleOnDrop` function invokes,  we retrieve the type of element that was dropped on Canvas 
 `const elType = e.dataTransfer.getData('text/plain').toLowerCase()`
 We then open the modal by passing it initial props i.e element Type and also x and y coordinates where the drop event had occurred.
@@ -62,9 +68,3 @@ We then open the modal by passing it initial props i.e element Type and also x a
 
 ### When Modal is closed
 When modal is closed we check the object returned by modal if it has an id of undefined that means component is rendered for first time so an id is given and element is added to `elementsOnBoard` array. Else we update only the component that was changed.
-
-
-## Modal.js
-When modal is opened for the first time it is populated with x and y coordinates where drop event had occurred. 
-Here user can change fontweight and fontsize and add text.
-When modal is closed it constructs a object and it is returned to Board component
